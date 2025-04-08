@@ -27,7 +27,7 @@ namespace Exam.UserManager.Controllers
             {
                 //***
                 //TODO: Item 4: Implement the logic to get user by id
-                UserDTO user = new UserDTO(); //must invoke userQueryService
+                UserDTO user = _userQueryService.Get(id); //must invoke userQueryService
                 //***
                 UserResourceModel mapped = _mapper.Map<UserResourceModel>(user);
                 return Ok(mapped);
@@ -69,7 +69,7 @@ namespace Exam.UserManager.Controllers
                 //***
                 //TODO: Item 5: Implement the logic to add user
                 UserDTO mapped = _mapper.Map<UserDTO>(user);
-                string userId = "some ID from the userWriteService";
+                string userId = _userWriteService.Add(mapped);
                 //***
                 return CreatedAtAction(nameof(Get), new { id = userId }, user);
             }
@@ -88,7 +88,7 @@ namespace Exam.UserManager.Controllers
                 //***
                 //TODO Item 6: Implement the logic to update user
                 UserDTO mapped = _mapper.Map<UserDTO>(user);
-                bool result = false; //result of update from userWriteService
+                bool result = _userWriteService.Update(mapped); //result of update from userWriteService
                 //***
                 if (result)
                 {
@@ -112,8 +112,16 @@ namespace Exam.UserManager.Controllers
                 var result = _userWriteService.Delete(id);
                 //I need to return 200 or 204 if the user is deleted successfully
                 //***
-                return NotFound();
+                if(result)
+                    {
+                    return NoContent();
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
+
             catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);

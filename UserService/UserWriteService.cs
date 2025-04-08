@@ -37,7 +37,7 @@ namespace Exam.UserManager.Service
 
                 //***
                 //TODO Item 2: Implement the logic to update user
-                bool result = false; //result of update from user repository
+                bool result = _userRepository.Update(user); //result of update from user repository
                 //***
 
                 return result;
@@ -55,8 +55,7 @@ namespace Exam.UserManager.Service
                 UserModel user = _userRepository.Get(id);
                 //what if user is not existing?
                 user.IsActive = false;
-
-                bool result = false; //result of update from user repository
+                bool result = _userRepository.Update(user); //result of update from user repository
                 //***
 
                 return result;
